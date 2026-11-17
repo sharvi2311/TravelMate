@@ -66,8 +66,7 @@
 
 <body class="bg-gray-50 text-gray-800 min-h-screen">
     <div id="root"></div>
-
-    <script type="text/babel">
+        <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         const API = "http://localhost:8000/api";
 
@@ -145,6 +144,7 @@
             const startPackageBooking = () => setPackageFlow({ ...packageFlow, stage: 'booking' });
             const confirmPackageBooking = () => setPackageFlow({ ...packageFlow, stage: 'success' });
             const closePackageFlow = () => setPackageFlow({ active: false, stage: 'list', selectedPackage: null });
+            const openChat = () => setView('chat');
 
             const calculateTrip = async () => {
                 if (!selectedDriver) return alert("Please select a driver");
@@ -185,19 +185,20 @@
                                         <a href="#" className="block px-4 py-2 hover:bg-gray-100">🔥 Special Offers</a>
                                     </div>
                                 </div>
-{(view === 'wizard' || packageFlow.active) && (                                    <button onClick={() => { setView('landing'); closePackageFlow(); }} className="text-indigo-600 hover:text-indigo-800">← Back to Home</button>
+                                {(view === 'wizard' || view === 'chat' || packageFlow.active) && (
+                                    <button onClick={() => { setView('landing'); closePackageFlow(); }} className="text-indigo-600 hover:text-indigo-800">← Back to Home</button>
                                 )}
                             </nav>
                         </div>
                     </header>
 
                     <main className="flex-grow">
-                        {view === 'landing' && !packageFlow.active && <LandingView openPackageList={openPackageList} startWizard={startWizard} openChat={() => setView('chat')} />}
+                        {view === 'landing' && !packageFlow.active && <LandingView openPackageList={openPackageList} startWizard={startWizard} openChat={openChat} />}
                         {packageFlow.active && <PackageBookingFlow stage={packageFlow.stage} selectedPackage={packageFlow.selectedPackage} packages={packages} onSelectPackage={selectPackage} onStartBooking={startPackageBooking} onConfirm={confirmPackageBooking} onClose={closePackageFlow} />}
                         {view === 'wizard' && !packageFlow.active && <WizardView step={step} setStep={setStep} formData={formData} setFormData={setFormData} spots={spots} drivers={drivers} restaurants={restaurants} selectedSpots={selectedSpots} setSelectedSpots={setSelectedSpots} selectedDriver={selectedDriver} setSelectedDriver={setSelectedDriver} itinerary={itinerary} calculateTrip={calculateTrip} loading={loading} start_loc={formData.start_loc} dest={formData.dest} />}
+                        {view === 'chat' && !packageFlow.active && <ChatPage />}
                     </main>
 
-   {modal === 'ai' && <AIModal close={() => setModal(null)} />}
                     <footer className="bg-white border-t mt-auto">
                         <div className="max-w-6xl mx-auto px-4 py-6 text-center text-gray-500 text-sm">TravelMate · Travel more, spend wisely.</div>
                     </footer>
@@ -205,7 +206,7 @@
             );
         }
 
-        function LandingView({ openPackageList, startWizard, setModal }) {
+        function LandingView({ openPackageList, startWizard, openChat }) {
             return (
                 <div className="max-w-6xl mx-auto px-4 py-12 fade-in">
                     <div className="text-center mb-12">
@@ -219,7 +220,7 @@
                             <p className="text-gray-600 mb-4">Explore affordable trips and compare ready-made packages from travel agencies.</p>
                             <span className="text-indigo-600 font-semibold group-hover:underline">Explore packages →</span>
                         </div>
-                        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group" onClick={() => setModal('ai')}>
+                        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group" onClick={openChat}>
                             <div className="icon-box bg-gradient-to-br from-purple-400 to-purple-600 text-white mb-5 group-hover:scale-110 transition-transform">🤖</div>
                             <h3 className="text-xl font-bold mb-2">AI Travel Assistant</h3>
                             <p className="text-gray-600 mb-4">Tell us your destination, budget and interests. Get trip suggestions that fit you.</p>
@@ -284,12 +285,11 @@
                 return acc;
             }, {});
 
-                        if (stage === 'list') {
+            if (stage === 'list') {
                 return (
                     <div className="max-w-5xl mx-auto px-4 py-8 fade-in">
                         <h2 className="text-3xl font-bold text-gray-900 mb-6">Explore Travel Packages</h2>
 
-                        {/* FILTER BAR - 4 + 4 GRID */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                                 <div>
@@ -343,12 +343,10 @@
                             </div>
                         </div>
 
-                        {/* COUNT HEADING */}
                         <h3 className="text-xl font-bold text-gray-900 mb-4">
                             {hasSearched ? `Found ${filteredPackages.length} package(s)` : `All Packages (${filteredPackages.length})`}
                         </h3>
 
-                        {/* FLAT HORIZONTAL PACKAGE CARDS */}
                         {filteredPackages.length === 0 ? (
                             <div className="text-center py-20 bg-white rounded-xl border">
                                 <div className="text-4xl mb-2">🔍</div>
@@ -597,21 +595,145 @@
 
             return null;
         }
-   function AIModal({ close }) {
-       return (
-           <div className="fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4" onClick={close}>
-               <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 fade-in" onClick={e => e.stopPropagation()}>
-                   <div className="flex justify-between items-center mb-4">
-                       <h3 className="text-xl font-bold">Plan a trip with TravelMate AI</h3>
-                       <button onClick={close} className="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-                   </div>
-                   <div className="border rounded-lg p-6 h-40 bg-gray-50 flex items-center justify-center text-sm text-gray-500">🚧 The AI chatbot is under development and will be available soon!</div>
-               </div>
-           </div>
-       );
-   }
 
-                
+        function applyBold(text) {
+            return text
+                .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#312e81;">$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>');
+        }
+
+        function formatBotMessage(text) {
+            const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const lines = escaped.split('\n');
+            const html = lines.map(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return '<div style="height:10px"></div>';
+                if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+                    return '<div style="display:flex;align-items:flex-start;margin:5px 0;line-height:1.5;"><span style="color:#6366f1;margin-right:10px;font-size:10px;margin-top:4px;">●</span><span>' + applyBold(trimmed.slice(2)) + '</span></div>';
+                }
+                return '<div style="margin:3px 0;line-height:1.5;">' + applyBold(trimmed) + '</div>';
+            }).join('');
+            return html;
+        }
+
+        const CHAT_GREETING = { role: 'assistant', content: "Hello! I'm TravelMate AI 🤖 I can search live packages, check weather, find verified drivers and restaurants. Try the suggestions on the right, or type your own question below!" };
+
+        function ChatPage() {
+            const [prompt, setPrompt] = useState("");
+            const [typing, setTyping] = useState(false);
+            const [messages, setMessages] = useState([CHAT_GREETING]);
+            const chatRef = useRef(null);
+
+            useEffect(() => {
+                if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+            }, [messages, typing]);
+
+            const sendText = async (text) => {
+                const clean = (text || "").trim();
+                if (!clean || typing) return;
+                const history = [...messages, { role: 'user', content: clean }];
+                setMessages(history);
+                setTyping(true);
+                try {
+                    const res = await fetch(`${API}/chat`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ messages: history.map(m => ({ role: m.role, content: m.content })) })
+                    });
+                    const data = await res.json();
+                    setMessages([...history, { role: 'assistant', content: data.reply, tools: data.tools_used }]);
+                } catch (e) {
+                    setMessages([...history, { role: 'assistant', content: "⚠️ I couldn't reach the backend. Please make sure the Python server is running." }]);
+                }
+                setTyping(false);
+            };
+
+            const handleSend = () => {
+                const t = prompt;
+                setPrompt("");
+                sendText(t);
+            };
+
+            const suggestions = [
+                "Find me a nature trip from Pune under ₹1000",
+                "What's the weather at Bhushi Dam?",
+                "Suggest a verified driver who speaks Marathi",
+                "Best restaurants near Lonavala?",
+                "Tell me about Karla Caves"
+            ];
+
+            return (
+                <div className="max-w-6xl mx-auto px-4 py-8 fade-in w-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div className="lg:col-span-3 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden h-[75vh]">
+                            <div className="px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl mr-3">🤖</div>
+                                    <div>
+                                        <h2 className="font-bold text-lg leading-tight">TravelMate AI Assistant</h2>
+                                        <p className="text-xs text-indigo-100 flex items-center"><span className="w-2 h-2 bg-green-400 rounded-full mr-1"></span> Live · Powered by Groq + Qwen</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => setMessages([CHAT_GREETING])} className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg transition">🔄 New Chat</button>
+                            </div>
+
+                            <div ref={chatRef} className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+                                {messages.map((msg, i) => (
+                                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[80%] p-4 rounded-xl text-sm shadow-sm ${msg.role === 'user' ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-white border border-gray-200 text-gray-700 rounded-bl-sm'}`}>
+                                            {msg.role === 'assistant' ? (
+                                                <div dangerouslySetInnerHTML={{ __html: formatBotMessage(msg.content) }}></div>
+                                            ) : (
+                                                <span style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                                {typing && (
+                                    <div className="flex justify-start">
+                                        <div className="bg-white border border-gray-200 p-4 rounded-xl rounded-bl-sm text-sm text-gray-500 animate-pulse shadow-sm">🤖 TravelMate AI is thinking...</div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="p-4 border-t bg-white">
+                                <div className="flex space-x-2">
+                                    <input
+                                        value={prompt}
+                                        onChange={e => setPrompt(e.target.value)}
+                                        onKeyPress={e => e.key === 'Enter' && handleSend()}
+                                        placeholder="Ask about packages, weather, drivers, restaurants..."
+                                        className="flex-grow rounded-lg border-gray-300 shadow-sm p-3 border focus:ring-indigo-500"
+                                    />
+                                    <button onClick={handleSend} disabled={typing} className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold disabled:bg-gray-300 transition">Send</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="lg:col-span-1 space-y-4">
+                            <div className="bg-white rounded-xl shadow-sm border p-5">
+                                <h3 className="font-bold mb-3 text-gray-900">💡 Try asking</h3>
+                                <div className="space-y-2">
+                                    {suggestions.map(s => (
+                                        <button key={s} onClick={() => sendText(s)} disabled={typing} className="w-full text-left text-sm bg-indigo-50 hover:bg-indigo-100 text-indigo-700 p-3 rounded-lg transition disabled:opacity-50">{s}</button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="bg-white rounded-xl shadow-sm border p-5">
+                                <h3 className="font-bold mb-3 text-gray-900">🔧 What I can do</h3>
+                                <ul className="text-sm text-gray-600 space-y-2">
+                                    <li>• Search live packages & prices</li>
+                                    <li>• Check weather at any spot</li>
+                                    <li>• Find verified drivers by language or rating</li>
+                                    <li>• Recommend restaurants on your route</li>
+                                    <li>• Share history, aesthetics & crowd info for spots</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
 
         function WizardView(props) {
             const { step, setStep, formData, setFormData, spots, drivers, restaurants, selectedSpots, setSelectedSpots, selectedDriver, setSelectedDriver, itinerary, calculateTrip, loading, start_loc, dest } = props;
@@ -817,6 +939,5 @@
 
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
-</body>
-
-</html>
+    </body>
+</html>    
