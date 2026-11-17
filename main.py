@@ -45,23 +45,18 @@ RESTAURANTS = [
 
 PACKAGES = [
     {"id": "p1", "title": "Lonavala Express Day Trip", "provider": "MSRTC Shivneri", "price": 850, "inclusions": ["AC Bus", "Tiger's Leap", "Bhushi Dam"], "rating": 4.2, "duration": "One day", "preference": "Nature", "from": "Pune", "to": "Lonavala"},
-    {"id": "p5", "title": "Weekend Nature Escape", "provider": "Green Trails", "price": 3500, "inclusions": ["SUV", "Trekking", "Camping", "Bonfire"], "rating": 4.5, "duration": "Weekend", "preference": "Nature", "from": "Pune", "to": "Lonavala"},
-    {"id": "p6", "title": "Extended Hills Adventure", "provider": "Sahyadri Explorers", "price": 5500, "inclusions": ["Private Cab", "Trekking", "Camping", "All Meals"], "rating": 4.6, "duration": "2-3 days", "preference": "Nature", "from": "Pune", "to": "Lonavala"},
     {"id": "p2", "title": "Premium Caves & Valleys Tour", "provider": "Deccan Odyssey Travels", "price": 2500, "inclusions": ["Innova Cab", "Karla Caves", "Lunch", "Guide"], "rating": 4.7, "duration": "Weekend", "preference": "Culture", "from": "Pune", "to": "Lonavala"},
     {"id": "p7", "title": "Heritage Caves Day Tour", "provider": "Heritage Walks", "price": 1800, "inclusions": ["AC Bus", "Karla & Bhaja Caves", "Guide", "Lunch"], "rating": 4.3, "duration": "One day", "preference": "Culture", "from": "Pune", "to": "Lonavala"},
     {"id": "p3", "title": "Budget Backpacker Special", "provider": "Youth Hostels India", "price": 600, "inclusions": ["Shared Cab", "Bhushi Dam", "Street Food Tour"], "rating": 4.0, "duration": "One day", "preference": "Food", "from": "Pune", "to": "Lonavala"},
-    {"id": "p8", "title": "Culinary Weekend Retreat", "provider": "Foodie Trails", "price": 4200, "inclusions": ["Private Cab", "Farm Visit", "Cooking Class", "All Meals"], "rating": 4.8, "duration": "Weekend", "preference": "Food", "from": "Pune", "to": "Lonavala"},
-    {"id": "p4", "title": "Luxury Hills Retreat", "provider": "Taj Safaris", "price": 8500, "inclusions": ["Private SUV", "5-Star Stay", "Spa", "Fine Dining"], "rating": 4.9, "duration": "2-3 days", "preference": "Relaxation", "from": "Mumbai", "to": "Lonavala"},
-    {"id": "p9", "title": "Spa & Wellness Day", "provider": "Serenity Escapes", "price": 3200, "inclusions": ["Cab", "Resort Day Pass", "Spa", "Lunch"], "rating": 4.4, "duration": "One day", "preference": "Relaxation", "from": "Pune", "to": "Lonavala"},
     {
         "id": "p10", "title": "Mumbai Darshan Bus Ticket", "provider": "Mumbai Darshan Tours", "price": 499, "inclusions": ["12-hour guided tour", "Multilingual live guide", "Free cancellation", "Pickup & drop"], "rating": 4.6, "duration": "One day", "preference": "Culture", "from": "Mumbai", "to": "Mumbai (City Tour)",
         "itinerary": [
-            {"name": "The Asiatic Society Mumbai", "halt": "10 min"}, {"name": "Gateway of India", "halt": "45 min"}, {"name": "Sailing Boat Ride", "halt": "30 min"}, {"name": "Chhatrapati Shivaji Maharaj Vastu Sangrahalay (CSMVS)", "halt": "50 min"}, {"name": "Jehangir Art Gallery", "halt": "15 min"}, {"name": "Paradox Museum (Optional)", "halt": "1 hr"}, {"name": "Marine Drive (Queen's Necklace)", "halt": "10 min"}, {"name": "Mahalaxmi Temple", "halt": "35 min"}, {"name": "Nehru Science Centre + Orama 4D Show", "halt": "50 min"}, {"name": "Siddhivinayak Temple", "halt": "35 min"}, {"name": "National Museum of Indian Cinema", "halt": "45 min"}, {"name": "Juhu Beach", "halt": "45 min"}
+            {"name": "The Asiatic Society Mumbai", "halt": "10 min"}, {"name": "Gateway of India", "halt": "45 min"}, {"name": "Sailing Boat Ride", "halt": "30 min"}, {"name": "Chhatrapati Shivaji Maharaj Vastu Sangrahalay", "halt": "50 min"}, {"name": "Jehangir Art Gallery", "halt": "15 min"}, {"name": "Paradox Museum", "halt": "1 hr"}, {"name": "Marine Drive", "halt": "10 min"}, {"name": "Mahalaxmi Temple", "halt": "35 min"}, {"name": "Nehru Science Centre", "halt": "50 min"}, {"name": "Siddhivinayak Temple", "halt": "35 min"}, {"name": "Bollywood Museum", "halt": "45 min"}, {"name": "Juhu Beach", "halt": "45 min"}
         ],
         "boarding_points": [
             {"route": "From Thane", "stops": "Thane, Mulund, Bhandup, Vikhroli, Ghatkopar, Chembur, CSTM"},
-            {"route": "From Panvel", "stops": "Panvel, Khanda Colony, Kalamboli, Kamothe, Kharghar, Belapur, Seawood, Nerul, Jui Nagar, Sanpada, Vashi, Chembur"},
-            {"route": "From Borivali", "stops": "Dahisar, Borivali, Kandivali, Malad, Goregaon, Jogeshwari, Andheri East, Chakala, Ville Parle, Santacruz, Bandra, Mahim, Dadar, Byculla"}
+            {"route": "From Panvel", "stops": "Panvel, Khanda Colony, Kalamboli, Kamothe, Kharghar, Belapur, Seawood, Nerul"},
+            {"route": "From Borivali", "stops": "Dahisar, Borivali, Kandivali, Malad, Goregaon, Jogeshwari, Andheri East, Bandra, Mahim, Dadar"}
         ]
     }
 ]
